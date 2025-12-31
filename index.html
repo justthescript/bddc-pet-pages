@@ -156,6 +156,11 @@
             display: block;
         }
 
+        /* Disable body scroll when lightbox is open */
+        body.lightbox-open {
+            overflow: hidden;
+        }
+
         .lightbox-content {
             position: relative;
             max-width: 90vw;
@@ -201,11 +206,11 @@
             }
 
             .lightbox-prev {
-                left: 10px;
+                left: 5px;
             }
 
             .lightbox-next {
-                right: 10px;
+                right: 5px;
             }
         }
 
@@ -232,13 +237,13 @@
         }
 
         .lightbox-nav {
-            position: fixed;
+            position: absolute;
             top: 50%;
             transform: translateY(-50%);
             color: white;
             font-size: 40px;
             cursor: pointer;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.7);
             width: 50px;
             height: 50px;
             border-radius: 50%;
@@ -247,6 +252,29 @@
             justify-content: center;
             transition: background 0.3s;
             z-index: 10001;
+        }
+
+        .lightbox-nav:hover {
+            background: rgba(212, 69, 110, 0.9);
+        }
+
+        .lightbox-prev {
+            left: -70px;
+        }
+
+        .lightbox-next {
+            right: -70px;
+        }
+
+        /* Adjust nav arrows for smaller screens */
+        @media (max-width: 1200px) {
+            .lightbox-prev {
+                left: 10px;
+            }
+
+            .lightbox-next {
+                right: 10px;
+            }
         }
 
         .lightbox-nav:hover {
@@ -645,10 +673,12 @@
             const openLightbox = (index) => {
                 setCurrentImageIndex(index);
                 setLightboxActive(true);
+                document.body.classList.add('lightbox-open');
             };
 
             const closeLightbox = () => {
                 setLightboxActive(false);
+                document.body.classList.remove('lightbox-open');
             };
 
             const nextImage = () => {
