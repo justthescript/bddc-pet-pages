@@ -470,18 +470,48 @@
             const [images, setImages] = useState([]);
 
             useEffect(() => {
-                // Get pet ID from URL parameter
+                // Get pet data from URL parameters
                 const urlParams = new URLSearchParams(window.location.search);
-                const petId = urlParams.get('id');
-
-                if (petId) {
-                    // In production, this would fetch from your API or receive data from parent window
-                    fetchPetData(petId);
+                
+                // Check if we have URL parameters (from Wix)
+                if (urlParams.has('id')) {
+                    console.log('Loading pet from URL parameters');
+                    
+                    // Build pet object from URL params
+                    const pet = {
+                        Name: urlParams.get('name'),
+                        Id: urlParams.get('id'),
+                        'Breed (dog)': urlParams.get('breed'),
+                        Age: urlParams.get('age'),
+                        'Estimated birth date': urlParams.get('birthday'),
+                        'Weight (lbs)': urlParams.get('weight'),
+                        Gender: urlParams.get('gender'),
+                        'Adoption fee (amount)': urlParams.get('fee'),
+                        Altered: urlParams.get('altered'),
+                        'Good with dogs': urlParams.get('dogs'),
+                        'Good with cats': urlParams.get('cats'),
+                        'Good with children': urlParams.get('kids'),
+                        Housetrained: urlParams.get('housetrained'),
+                        Description: urlParams.get('description'),
+                        'Special needs': urlParams.get('specialNeeds'),
+                        Status: urlParams.get('status'),
+                        Img1: urlParams.get('img1'),
+                        Img2: urlParams.get('img2'),
+                        Img3: urlParams.get('img3'),
+                        Img4: urlParams.get('img4'),
+                        Img5: urlParams.get('img5')
+                    };
+                    
+                    console.log('Pet data loaded:', pet);
+                    setPetData(pet);
+                    setLoading(false);
+                    setupImages(pet);
                 } else {
-                    // Listen for data from parent window (Wix)
+                    // Fallback: Listen for postMessage (for future use)
+                    console.log('No URL params, waiting for postMessage');
                     window.addEventListener('message', handleMessage);
                     
-                    // Send ready signal to parent window
+                    // Send ready signal to parent
                     if (window.parent) {
                         console.log('Sending READY message to parent');
                         window.parent.postMessage({ type: 'PET_PAGE_READY' }, '*');
