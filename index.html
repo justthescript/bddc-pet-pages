@@ -480,6 +480,12 @@
                 } else {
                     // Listen for data from parent window (Wix)
                     window.addEventListener('message', handleMessage);
+                    
+                    // Send ready signal to parent window
+                    if (window.parent) {
+                        console.log('Sending READY message to parent');
+                        window.parent.postMessage({ type: 'PET_PAGE_READY' }, '*');
+                    }
                 }
 
                 return () => {
@@ -488,10 +494,13 @@
             }, []);
 
             const handleMessage = (event) => {
-                // Security: verify origin in production
-                // if (event.origin !== 'https://www.bigdogsdontcry.com') return;
+                // Accept messages from any origin during development
+                // In production, you can check: if (event.origin !== 'https://www.bigdogsdontcry.com') return;
+                
+                console.log('Message received:', event.data);
 
                 if (event.data && event.data.type === 'PET_DATA') {
+                    console.log('Pet data received:', event.data.pet);
                     setPetData(event.data.pet);
                     setLoading(false);
                     setupImages(event.data.pet);
