@@ -734,10 +734,20 @@
 
             // Handle NaN/Unknown in weight
             let weight = petData['Weight (lbs)'];
+            let isValidWeight = false;
             if (weight) {
                 const weightStr = String(weight).trim().toLowerCase();
                 if (weightStr.includes('nan') || weightStr === 'unknown' || weightStr === 'n/a' || weightStr === '') {
                     weight = null;
+                } else {
+                    // Check if it's a valid number
+                    const weightNum = parseFloat(weight);
+                    if (!isNaN(weightNum) && weightNum > 0) {
+                        weight = weightNum;
+                        isValidWeight = true;
+                    } else {
+                        weight = null;
+                    }
                 }
             }
 
@@ -791,7 +801,7 @@
                             </div>
                             <div className="info-card">
                                 <h3>Weight</h3>
-                                <p>{weight ? `${weight} lbs` : 'Unknown'}</p>
+                                <p>{isValidWeight ? `${weight} lbs` : 'Unknown'}</p>
                             </div>
                             <div className="info-card">
                                 <h3>Gender</h3>
