@@ -707,7 +707,18 @@
                 return <div className="loading">No pet data available</div>;
             }
 
-            const age = calculateAge(petData['Estimated birth date']) || petData.Age || 'Unknown';
+            // Calculate age and handle NaN values
+            let age = calculateAge(petData['Estimated birth date']) || petData.Age || 'Unknown';
+            if (typeof age === 'string' && (age.includes('NaN') || age.toLowerCase() === 'nan')) {
+                age = 'Unknown';
+            }
+
+            // Handle NaN in weight
+            let weight = petData['Weight (lbs)'];
+            if (weight && (String(weight).includes('NaN') || String(weight).toLowerCase() === 'nan')) {
+                weight = null;
+            }
+
             const hasSpecialNeeds = petData['Special needs'] && petData['Special needs'] !== 'None';
 
             return (
@@ -758,7 +769,7 @@
                             </div>
                             <div className="info-card">
                                 <h3>Weight</h3>
-                                <p>{petData['Weight (lbs)'] ? `${petData['Weight (lbs)']} lbs` : 'Unknown'}</p>
+                                <p>{weight ? `${weight} lbs` : 'Unknown'}</p>
                             </div>
                             <div className="info-card">
                                 <h3>Gender</h3>
