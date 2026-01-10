@@ -633,8 +633,22 @@
             const calculateAge = (birthday) => {
                 if (!birthday) return null;
 
+                // Handle "Unknown" or other non-date strings from Google Sheets
+                if (typeof birthday === 'string') {
+                    const cleanBirthday = birthday.trim().toLowerCase();
+                    if (cleanBirthday === 'unknown' || cleanBirthday === 'n/a' || cleanBirthday === '') {
+                        return null;
+                    }
+                }
+
                 try {
                     const birthDate = new Date(birthday);
+
+                    // Check if the date is valid
+                    if (isNaN(birthDate.getTime())) {
+                        return null;
+                    }
+
                     const today = new Date();
 
                     let years = today.getFullYear() - birthDate.getFullYear();
@@ -707,16 +721,24 @@
                 return <div className="loading">No pet data available</div>;
             }
 
-            // Calculate age and handle NaN values
+            // Calculate age and handle NaN/Unknown values
             let age = calculateAge(petData['Estimated birth date']) || petData.Age || 'Unknown';
-            if (typeof age === 'string' && (age.includes('NaN') || age.toLowerCase() === 'nan')) {
-                age = 'Unknown';
+
+            // Clean up invalid age values
+            if (typeof age === 'string') {
+                const cleanAge = age.trim().toLowerCase();
+                if (cleanAge.includes('nan') || cleanAge === 'unknown' || cleanAge === 'n/a' || cleanAge === '') {
+                    age = 'Unknown';
+                }
             }
 
-            // Handle NaN in weight
+            // Handle NaN/Unknown in weight
             let weight = petData['Weight (lbs)'];
-            if (weight && (String(weight).includes('NaN') || String(weight).toLowerCase() === 'nan')) {
-                weight = null;
+            if (weight) {
+                const weightStr = String(weight).trim().toLowerCase();
+                if (weightStr.includes('nan') || weightStr === 'unknown' || weightStr === 'n/a' || weightStr === '') {
+                    weight = null;
+                }
             }
 
             const hasSpecialNeeds = petData['Special needs'] && petData['Special needs'] !== 'None';
