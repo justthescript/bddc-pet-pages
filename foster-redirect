@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Big Dogs Don't Cry - Redirecting...</title>
+  <style>
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      background: linear-gradient(160deg, #fdf2f7 0%, #f5f0eb 50%, #fce4ec 100%);
+    }
+    .loader {
+      text-align: center;
+      padding: 40px;
+    }
+    .loader img {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 16px;
+    }
+    .loader p {
+      color: #888;
+      font-size: 15px;
+    }
+    .loader a {
+      color: #E91E63;
+      text-decoration: none;
+      font-weight: 500;
+    }
+  </style>
+  <script>
+    (function() {
+      var BASE = 'https://script.google.com/macros/s/AKfycbw0qd7N-UHb25rwKCHAWLoa_66lexJ-JxuQ6FuXdyrxS-H0rX0113hgSYQZ-KbKRurHEw/exec';
+      var params = window.location.search;
+      var target = BASE + params;
+      window.location.replace(target);
+    })();
+  </script>
+</head>
+<body>
+  <div class="loader">
+    <img src="https://static.wixstatic.com/media/4cb683_a8d649d3589846568a30460f1d077d32~mv2.png/v1/fill/w_362,h_362,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/bddc_logo-removebg-preview.png" alt="BDDC">
+    <p>Redirecting you now...</p>
+    <p><a id="fallback" href="#">Click here if not redirected</a></p>
+  </div>
+  <script>
+    document.getElementById('fallback').href = 'https://script.google.com/macros/s/AKfycbw0qd7N-UHb25rwKCHAWLoa_66lexJ-JxuQ6FuXdyrxS-H0rX0113hgSYQZ-KbKRurHEw/exec' + window.location.search;
+  </script>
+</body>
+</html>
